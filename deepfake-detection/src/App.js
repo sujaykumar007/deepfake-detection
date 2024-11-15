@@ -53,3 +53,35 @@ const App = () => {
         setResult(`Error: ${error.message}`);
     }
 };
+
+return (
+  <div className="App">
+      <h1>Deepfake Detection Tool</h1>
+      <form onSubmit={handleSubmit}>
+          <label>
+              <input
+                  type="radio"
+                  value="image"
+                  checked={type === "image"}
+                  onChange={() => setType("image")}
+              />
+              Image
+          </label>
+          <label>
+              <input
+                  type="radio"
+                  value="video"
+                  checked={type === "video"}
+                  onChange={() => setType("video")}
+              />
+              Video
+          </label>
+          <input type="file" accept={type === "image" ? "image/*" : "video/*"} onChange={handleFileChange} />
+          <button type="submit">Upload and Detect</button>
+      </form>
+      <div className="result">{result}</div>
+  </div>
+);
+};
+
+export default App;
