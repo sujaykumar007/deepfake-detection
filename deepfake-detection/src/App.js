@@ -10,4 +10,16 @@ const App = () => {
     const handleFileChange = (event) => {
         setFile(event.target.files[0]);
     };
-    
+
+    const handleSubmit = async (e) => {
+      e.preventDefault();
+      if (!file) {
+          setResult("Please upload a file.");
+          return;
+      }
+
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("type", type);
+
+      setResult("Processing...");
