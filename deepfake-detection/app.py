@@ -50,3 +50,27 @@ def detect_video(file_path):
         "fake_confidence": fake_confidence,
         "real_confidence": real_confidence,
     }
+    
+@app.route("/detect", methods=["POST"])
+def detect():
+    if "file" not in request.files or "type" not in request.form:
+        return jsonify({"error": "Invalid input"}), 400
+
+    file = request.files["file"]
+    file_type = request.form["type"]
+
+    file_path = os.path.join(UPLOAD_FOLDER, file.filename)
+    file.save(file_path)
+
+    if file_type == "image":
+        result = detect_image(file_path)
+    elif file_type == "video":
+        result = detect_video(file_path)
+    else:
+        return jsonify({"error": "Unsupported file type"}), 400
+
+    os.remove(file_path)  # Cleanup
+    return jsonify(result)
+
+if __name__ == "__main__":
+    app.run(debug=True)
